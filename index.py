@@ -1,7 +1,7 @@
 import os
 import json
 
-from src.userControllers import login
+from src.userControllers import register
 
 def main():
     # Check if the usersDatabase exists or not, and create if not
@@ -12,8 +12,8 @@ def main():
         with open("database/users.json", "w") as usersDatabase:
             usersDatabase.write(json_data)
 
-    # Execute the login route
-    login()
+    # Execute the register route
+    register()
 
 
 if __name__ == "__main__":

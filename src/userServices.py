@@ -20,3 +20,23 @@ def loginService(user_data):
             raise Exception("The password not match")
 
         return {"data": user_exits}
+
+
+def registerService(user_data):
+    with open("database/users.json", "r") as usersDatabase:
+        data = json.load(usersDatabase)
+
+        user_exits = next(filter(lambda x: x["email"] == user_data["email"], data), None)
+
+        if user_exits:
+            raise Exception("This email is already registered!!!", 409)
+
+
+
+    # Search how read and write json files in python
+    # with open("database/users.json", "w") as usersDatabase:
+    #     data = json.load(usersDatabase)
+    #
+    #     print(type(data))
+
+    return user_data
