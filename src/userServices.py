@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 
 def loginService(user_data):
@@ -19,7 +20,8 @@ def loginService(user_data):
         if user_exits["password"] != user_data["password"]:
             raise Exception("The password not match")
 
-        return {"data": user_exits}
+    user_data.pop('password')
+    return {"data": user_exits}
 
 
 def registerService(user_data):
@@ -31,13 +33,16 @@ def registerService(user_data):
         if user_exits:
             raise Exception("This email is already registered!!!", 409)
 
-
+    # TODO: delete because the database will create for you
+    user_data['created_at'] = datetime.now().isoformat()
+    user_data['updated_at'] = datetime.now().isoformat()
 
     data.append(user_data)
 
     with open("database/users.json", "w") as usersDatabase:
         json.dump(data, usersDatabase, indent=2)
 
+    user_data.pop('password')
     return { "data": user_data }
 
 def getUserInfo(user_data):
@@ -58,4 +63,5 @@ def getUserInfo(user_data):
         if user_exits["password"] != user_data["password"]:
             raise Exception("The password not match")
 
-        return {"data": user_exits}
+    user_data.pop('password')
+    return {"data": user_exits}

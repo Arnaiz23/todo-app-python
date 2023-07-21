@@ -1,7 +1,7 @@
 import os
 import json
 
-from src.userControllers import user_info
+from src.userControllers import register, user_info
 
 def main():
     # Check if the usersDatabase exists or not, and create if not

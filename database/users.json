@@ -2,26 +2,57 @@
   {
     "email": "adrian@gmail.com",
     "name": "adrian",
-    "password": "adrian"
+    "password": "adrian",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
   },
   {
     "email": "test@gmail.com",
     "name": "test",
-    "password": "test"
+    "password": "test",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
   },
   {
     "email": "prueba@gmail.com",
     "password": "adrian",
-    "name": "adrian"
+    "name": "adrian",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
   },
   {
     "email": "prueba1@gmail.com",
     "password": "adrian",
-    "name": "adrian"
+    "name": "adrian",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
   },
   {
     "email": "auron@gmail.com",
     "password": "auron123",
-    "name": "auron"
+    "name": "auron",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
+  },
+  {
+    "email": "probando@gmail.com",
+    "password": "probando",
+    "name": "adfas",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
+  },
+  {
+    "email": "otro@gmail.com",
+    "password": "adfasdfasdfa",
+    "name": "adfadfas",
+    "created_at": "2023-07-21T20:32:50.389318",
+    "updated_at": "2023-07-21T20:32:50.389343"
+  },
+  {
+    "email": "adfasd@gmail.com",
+    "password": "adfadafsd",
+    "name": "adfadfasdf",
+    "created_at": "2023-07-21T20:34:24.348483",
+    "updated_at": "2023-07-21T20:34:24.348504"
   }
 ]
