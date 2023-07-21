@@ -1,5 +1,6 @@
 [
   {
+    "id": 1,
     "email": "adrian@gmail.com",
     "name": "adrian",
     "password": "adrian",
@@ -7,6 +8,7 @@
     "updated_at": "2023-07-21T20:32:50.389343"
   },
   {
+    "id": 2,
     "email": "test@gmail.com",
     "name": "test",
     "password": "test",
