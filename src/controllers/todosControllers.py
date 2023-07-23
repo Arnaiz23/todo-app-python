@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from ..services.userServices import loginService
-from ..services.todosServices import createTodo, getTodos
+from ..services.todosServices import createTodo, getTodos, updateTodo
 
 
 def getUserTodos():
@@ -19,8 +19,7 @@ def getUserTodos():
 
 def createNewTodo():
     todo_title = input("Enter the title of the todo: ")
-    # user_data = {"email": "adrian@gmail.com", "password": "adrian"}
-    user_data = {"email": "test@gmail.com", "password": "test"}
+    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
 
     try:
         user_login = loginService(user_data)
@@ -38,3 +37,17 @@ def createNewTodo():
         # statusCode = e.args[1]
         errorMessage = e.args[0]
         print({"error": errorMessage})
+
+def updateTodoController():
+    todo_id = int(input("Enter the id of the todo: "))
+    todo_title = input("Enter the new title: ")
+    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
+
+    try:
+        user_login = loginService(user_data)
+        todo_updated = updateTodo(todo_id, user_login['data'], todo_title)
+        print(todo_updated)
+    except Exception as e:
+        # statusCode = e.args[1]
+        errorMessage = e.args[0]
+        print({ "error": errorMessage })

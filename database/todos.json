@@ -1,5 +1,6 @@
 [
   {
+    "id": 0,
     "title": "Watch the LCQ EMEA final",
     "user_id": 1,
     "completed": false,
@@ -7,6 +8,7 @@
     "updated_at": "2023-07-23T18:04:37.651021"
   },
   {
+    "id": 1,
     "title": "Improve my english skills with ChatGPT",
     "user_id": 1,
     "completed": false,
@@ -14,6 +16,7 @@
     "updated_at": "2023-07-23T18:04:56.334407"
   },
   {
+    "id": 2,
     "title": "First todo of the test user",
     "user_id": 2,
     "completed": false,
