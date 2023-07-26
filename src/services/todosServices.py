@@ -26,14 +26,19 @@ def updateTodo(todo_id, user_login, todo_title):
     with open("database/todos.json", "r") as todosDB:
         data_json = json.load(todosDB)
 
-    todo_filter = next(filter(lambda v: v["id"] == todo_id, data_json), None)
-
-    if todo_filter is None:
+    indices = [index for index, todo in enumerate(data_json) if todo['id'] == todo_id]
+    
+    if not indices:
         raise Exception("This todo doesn't exists", 400)
 
-    if todo_filter['user_id'] != user_login['id']:
-        raise Exception("This user is not the owner of the todo")
+    for index in indices:
+        if data_json[index]['user_id'] != user_login['id']:
+            raise Exception("This user is not the owner of the todo")
 
-    # Update the title
+        data_json[index]['title'] = todo_title
+        todo_updated = data_json[index]
 
-    return todo_filter
+    with open("database/todos.json", "w") as todosDB:
+        json.dump(data_json, todosDB, indent=2)
+
+    return {"data": todo_updated}
