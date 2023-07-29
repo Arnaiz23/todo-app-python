@@ -2,7 +2,7 @@ from datetime import datetime
 from os import EX_CONFIG
 
 from ..services.userServices import loginService
-from ..services.todosServices import completedTodo, createTodo, getTodos, updateTodo
+from ..services.todosServices import completedTodo, createTodo, deletedTodo, getTodos, updateTodo
 
 
 def getUserTodos():
@@ -73,6 +73,19 @@ def updateTodoCompleted():
         user_login = loginService(user_data)
         todo_updated = completedTodo(todo_id, user_login['data'], todo_completed)
         print(todo_updated)
+    except Exception as e:
+        # statusCode = e.args[1]
+        errorMessage = e.args[0]
+        print({"error": errorMessage})
+
+def deleteTodoController():
+    todo_id = int(input("Enter the id of the todo: "))
+    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
+
+    try:
+        user_login = loginService(user_data)
+        todo_deleted = deletedTodo(todo_id, user_login['data'])
+        print(todo_deleted)
     except Exception as e:
         # statusCode = e.args[1]
         errorMessage = e.args[0]

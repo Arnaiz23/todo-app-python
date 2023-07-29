@@ -66,3 +66,22 @@ def completedTodo(todo_id, user_login, todo_completed):
         json.dump(data_json, todosDB, indent=2)
 
     return {"data": todo_updated}
+
+def deletedTodo(todo_id, user_login):
+    with open("database/todos.json", "r") as todosDB:
+        data_json = json.load(todosDB)
+
+    indices = [index for index, todo in enumerate(data_json) if todo['id'] == todo_id]
+
+    if not indices:
+        raise Exception("This todo doesn't exists", 400)
+
+    if data_json[indices[0]]['user_id'] != user_login['id']:
+        raise Exception("This user is not the owner of the todo")
+
+    del data_json[indices[0]]
+
+    with open("database/todos.json", "w") as todosDB:
+        json.dump(data_json, todosDB, indent=2)
+
+    return 204
