@@ -1,7 +1,7 @@
 import os
 import json
 
-from src.controllers.todosControllers import updateTodoController
+from src.controllers.todosControllers import updateTodoCompleted, updateTodoController
 
 def main():
     # Check if the usersDatabase exists or not, and create if not
@@ -19,7 +19,7 @@ def main():
         with open("database/todos.json", "w") as todosDatabase:
             todosDatabase.write(json_data)
 
-    updateTodoController()
+    updateTodoCompleted()
 
 if __name__ == "__main__":
     main()
