@@ -1,7 +1,7 @@
 import os
 import json
 
-from src.controllers.todosControllers import deleteTodoController, updateTodoCompleted, updateTodoController
+from db import session, Base
 
 def main():
     # Check if the usersDatabase exists or not, and create if not
@@ -19,7 +19,9 @@ def main():
         with open("database/todos.json", "w") as todosDatabase:
             todosDatabase.write(json_data)
 
-    deleteTodoController()
+    # With session and Base, you can execute the queries
+    todos = session.query(Base.classes.users).all()
+    print(len(todos))
 
 if __name__ == "__main__":
     main()
