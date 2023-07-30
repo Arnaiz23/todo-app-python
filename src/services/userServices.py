@@ -74,23 +74,42 @@ def registerService(user_data):
         raise Exception("This email is already registered!!!", 409)
 
 
-def getUserInfo(user_data):
-    with open("database/users.json", "r") as usersDatabase:
-        # data = list []
-        data = json.load(usersDatabase)
+def getUserInfo(code):
+    try:
+        user_data = jwt.decode(code, secret_key, algorithms=["HS256"])
 
-        # Use the filter function for search if any user match with the user input
-        user_exits = next(
-            filter(lambda x: x["email"] == user_data["email"], data), None
-        )
+        user_exists = session.query(User_model).filter(
+            user_data["email"] == User_model.email
+        ).first()
 
-        # If not exists, return
-        if user_exits is None:
-            raise Exception("The email is incorrect", 404)
+        user_response = {
+            "id": user_exists.id,
+            "name": user_exists.name,
+            "email": user_exists.email,
+            "created_at": user_exists.created_at,
+            "updated_at": user_exists.updated_at,
+        }
 
-        # Compare the passwords
-        if user_exits["password"] != user_data["password"]:
-            raise Exception("The password not match")
+        return {"data": user_response}
+    except Exception as e:
+        raise Exception("401", 401)
 
-    user_data.pop("password")
-    return {"data": user_exits}
+    # with open("database/users.json", "r") as usersDatabase:
+    #     # data = list []
+    #     data = json.load(usersDatabase)
+    #
+    #     # Use the filter function for search if any user match with the user input
+    #     user_exits = next(
+    #         filter(lambda x: x["email"] == user_data["email"], data), None
+    #     )
+    #
+    #     # If not exists, return
+    #     if user_exits is None:
+    #         raise Exception("The email is incorrect", 404)
+    #
+    #     # Compare the passwords
+    #     if user_exits["password"] != user_data["password"]:
+    #         raise Exception("The password not match")
+    #
+    # user_data.pop("password")
+    # return {"data": user_exists}

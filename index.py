@@ -1,7 +1,7 @@
 import os
 import json
 
-from src.controllers.userControllers import login, register
+from src.controllers.userControllers import login, user_info
 
 def main():
     # Check if the usersDatabase exists or not, and create if not
@@ -19,7 +19,8 @@ def main():
         with open("database/todos.json", "w") as todosDatabase:
             todosDatabase.write(json_data)
 
-    register()
+    # login()
+    user_info()
 
 if __name__ == "__main__":
     main()
