@@ -1,5 +1,7 @@
 import json
 
+from sqlalchemy import and_
+
 from db import Base, session
 
 Todos_model = Base.classes.todos
@@ -18,6 +20,17 @@ def mapTodos(todos):
             }
         )
     return todos_map
+
+
+def mapOneTodo(todo):
+    return {
+        "id": todo.id,
+        "title": todo.title,
+        "completed": todo.completed,
+        "created_at": todo.created_at,
+        "updated_at": todo.updated_at,
+        "user_id": todo.user_id
+    }
 
 
 def getTodos(user_id):
@@ -41,40 +54,30 @@ def createTodo(todo_data):
         session.add(new_todo)
         session.commit()
 
-        new_todo = {
-            "id": new_todo.id,
-            "title": new_todo.title,
-            "completed": new_todo.completed,
-            "created_at": new_todo.created_at,
-            "updated_at": new_todo.updated_at,
-            "user_id": new_todo.user_id,
-        }
+        new_todo = mapOneTodo(new_todo)
 
         return new_todo
     except Exception as e:
         raise e
 
 
-def updateTodo(todo_id, user_login, todo_title):
-    with open("database/todos.json", "r") as todosDB:
-        data_json = json.load(todosDB)
+def updateTodo(todo_id, user_id, todo_title):
+    try:
+        user_todo = (
+            session.query(Todos_model)
+            .filter(and_(Todos_model.user_id == user_id, Todos_model.id == todo_id))
+            .first()
+        )
 
-    indices = [index for index, todo in enumerate(data_json) if todo["id"] == todo_id]
+        user_todo.title = todo_title
 
-    if not indices:
-        raise Exception("This todo doesn't exists", 400)
+        session.commit()
 
-    for index in indices:
-        if data_json[index]["user_id"] != user_login["id"]:
-            raise Exception("This user is not the owner of the todo")
+        user_todo = mapOneTodo(user_todo)
 
-        data_json[index]["title"] = todo_title
-        todo_updated = data_json[index]
-
-    with open("database/todos.json", "w") as todosDB:
-        json.dump(data_json, todosDB, indent=2)
-
-    return {"data": todo_updated}
+        return user_todo
+    except Exception as e:
+        raise Exception("This todo doesn't exists")
 
 
 def completedTodo(todo_id, user_login, todo_completed):

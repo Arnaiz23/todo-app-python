@@ -1,10 +1,10 @@
 from src.controllers.userControllers import login
-from src.controllers.todosControllers import createNewTodo, getUserTodos
+from src.controllers.todosControllers import createNewTodo, getUserTodos, updateTodoController
 
 
 def main():
     # login()
-    createNewTodo()
+    updateTodoController()
 
 
 if __name__ == "__main__":

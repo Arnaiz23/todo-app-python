@@ -54,12 +54,14 @@ def createNewTodo():
 def updateTodoController():
     todo_id = int(input("Enter the id of the todo: "))
     todo_title = input("Enter the new title: ")
-    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
+    token = input("Token: ")
 
     try:
-        user_login = loginService(user_data)
-        todo_updated = updateTodo(todo_id, user_login["data"], todo_title)
-        print(todo_updated)
+        user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
+        todo_updated = updateTodo(todo_id, user_data['id'], todo_title)
+        print({ "data": todo_updated })
+    except jwt.InvalidSignatureError:
+        print(401)
     except Exception as e:
         # statusCode = e.args[1]
         errorMessage = e.args[0]
