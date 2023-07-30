@@ -93,23 +93,3 @@ def getUserInfo(code):
         return {"data": user_response}
     except Exception as e:
         raise Exception("401", 401)
-
-    # with open("database/users.json", "r") as usersDatabase:
-    #     # data = list []
-    #     data = json.load(usersDatabase)
-    #
-    #     # Use the filter function for search if any user match with the user input
-    #     user_exits = next(
-    #         filter(lambda x: x["email"] == user_data["email"], data), None
-    #     )
-    #
-    #     # If not exists, return
-    #     if user_exits is None:
-    #         raise Exception("The email is incorrect", 404)
-    #
-    #     # Compare the passwords
-    #     if user_exits["password"] != user_data["password"]:
-    #         raise Exception("The password not match")
-    #
-    # user_data.pop("password")
-    # return {"data": user_exists}
