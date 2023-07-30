@@ -1,14 +1,13 @@
 import datetime
-import json
 
 import bcrypt
 import jwt
 from sqlalchemy.exc import IntegrityError
 
 from db import Base, session
+from ..libs import secret_key
 
 User_model = Base.classes.users
-secret_key = "secret_key"
 
 
 def loginService(user_data):
