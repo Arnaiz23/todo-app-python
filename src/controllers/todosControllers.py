@@ -1,7 +1,8 @@
 from datetime import datetime
+
 import jwt
 
-from ..services.userServices import loginService
+from ..libs import secret_key
 from ..services.todosServices import (
     completedTodo,
     createTodo,
@@ -9,7 +10,6 @@ from ..services.todosServices import (
     getTodos,
     updateTodo,
 )
-from ..libs import secret_key
 
 
 def getUserTodos():

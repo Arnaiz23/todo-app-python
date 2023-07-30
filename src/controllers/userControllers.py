@@ -1,6 +1,6 @@
-import jwt
 from ..libs import validate_email
 from ..services.userServices import getUserInfo, loginService, registerService
+
 
 def login():
     email = input("Enter the email: ")
@@ -24,13 +24,14 @@ def login():
         # print(f"Error: {e}")
         # statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({ "error": errorMessage })
+        print({"error": errorMessage})
+
 
 def register():
-    # TODO: ask for the remember time
     email = input("Enter the email: ")
     password = input("Enter the password: ")
     name = input("Enter the name: ")
+    remember = int(input("1 or 2"))
 
     if validate_email(email) is False:
         print(f"The email {email} is not valid")
@@ -40,15 +41,16 @@ def register():
         print("Password must be at least 6 characters")
         return
 
-    user_data = { "email": email, "password": password, "name": name }
+    user_data = {"email": email, "password": password, "name": name}
 
     try:
-        result = registerService(user_data)
+        result = registerService(user_data, remember)
         print(result)
     except Exception as e:
         # statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({ "error": errorMessage })
+        print({"error": errorMessage})
+
 
 def user_info():
     code = input("Token: ")
@@ -60,4 +62,4 @@ def user_info():
         # print(f"Error: {e}")
         # statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({ "error": errorMessage })
+        print({"error": errorMessage})
