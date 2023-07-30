@@ -1,5 +1,5 @@
-from ..services.userServices import getUserInfo, loginService, registerService
 from ..libs import validate_email
+from ..services.userServices import getUserInfo, loginService, registerService
 
 def login():
     email = input("Enter the email: ")

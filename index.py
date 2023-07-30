@@ -1,7 +1,7 @@
 import os
 import json
 
-from db import session, Base
+from src.controllers.userControllers import login
 
 def main():
     # Check if the usersDatabase exists or not, and create if not
@@ -19,9 +19,7 @@ def main():
         with open("database/todos.json", "w") as todosDatabase:
             todosDatabase.write(json_data)
 
-    # With session and Base, you can execute the queries
-    todos = session.query(Base.classes.users).all()
-    print(len(todos))
+    login()
 
 if __name__ == "__main__":
     main()
