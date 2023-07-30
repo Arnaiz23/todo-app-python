@@ -1,14 +1,15 @@
-from datetime import datetime
+import datetime
 import json
 
-import jwt
 import bcrypt
+import jwt
+from sqlalchemy.exc import IntegrityError
 
 from db import Base, session
 
 User_model = Base.classes.users
-
 secret_key = "secret_key"
+
 
 def loginService(user_data):
     user_exists = (
@@ -33,6 +34,8 @@ def loginService(user_data):
         "id": user_exists.id,
         "name": user_exists.name,
         "email": user_exists.email,
+        "iat": datetime.datetime.utcnow(),
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1),
     }
 
     token = jwt.encode(payload, secret_key)
@@ -41,27 +44,34 @@ def loginService(user_data):
 
 
 def registerService(user_data):
-    with open("database/users.json", "r") as usersDatabase:
-        data = json.load(usersDatabase)
+    password_hashed = bcrypt.hashpw(
+        user_data["password"].encode("utf-8"), bcrypt.gensalt(10)
+    )
 
-        user_exits = next(
-            filter(lambda x: x["email"] == user_data["email"], data), None
+    try:
+        new_user = User_model(
+            name=user_data["name"],
+            email=user_data["email"],
+            password_hashed=password_hashed,
         )
 
-        if user_exits:
-            raise Exception("This email is already registered!!!", 409)
+        session.add(new_user)
 
-    # TODO: delete because the database will create for you
-    user_data["created_at"] = datetime.now().isoformat()
-    user_data["updated_at"] = datetime.now().isoformat()
+        session.commit()
 
-    data.append(user_data)
+        payload = {
+            "id": new_user.id,
+            "name": new_user.name,
+            "email": new_user.email,
+            "iat": datetime.datetime.utcnow(),
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=1),
+        }
 
-    with open("database/users.json", "w") as usersDatabase:
-        json.dump(data, usersDatabase, indent=2)
+        token = jwt.encode(payload, secret_key)
 
-    user_data.pop("password")
-    return {"data": user_data}
+        return {"data": token}
+    except IntegrityError as e:
+        raise Exception("This email is already registered!!!", 409)
 
 
 def getUserInfo(user_data):

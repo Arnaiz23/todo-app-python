@@ -18,7 +18,6 @@ def login():
 
     try:
         result = loginService(user_data)
-        # TODO: return the jwt
         print(result)
     except Exception as e:
         # print(f"Error: {e}")
@@ -40,11 +39,9 @@ def register():
         return
 
     user_data = { "email": email, "password": password, "name": name }
-    # user_data = { "email": "prueba1@gmail.com", "password": "adrian", "name": "adrian" }
 
     try:
         result = registerService(user_data)
-        # TODO: return the jwt
         print(result)
     except Exception as e:
         # statusCode = e.args[1]
