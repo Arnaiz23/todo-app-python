@@ -29,20 +29,22 @@ def getUserTodos():
 
 def createNewTodo():
     todo_title = input("Enter the title of the todo: ")
-    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
+    token = input("Token: ")
 
     try:
-        user_login = loginService(user_data)
+        user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
         todo_data = {
             "title": todo_title,
-            "user_id": user_login["data"]["id"],
+            "user_id": user_data["id"],
             "completed": False,
             "created_at": datetime.now().isoformat(),
             "updated_at": datetime.now().isoformat(),
         }
 
         todo_response = createTodo(todo_data)
-        print(todo_response)
+        print({"data": todo_response})
+    except jwt.InvalidSignatureError as e:
+        print(401)
     except Exception as e:
         # statusCode = e.args[1]
         errorMessage = e.args[0]

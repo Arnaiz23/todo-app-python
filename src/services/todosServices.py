@@ -29,15 +29,30 @@ def getTodos(user_id):
 
 
 def createTodo(todo_data):
-    with open("database/todos.json", "r") as todosDB:
-        todos_db = json.load(todosDB)
+    try:
+        new_todo = Todos_model(
+            title=todo_data["title"],
+            user_id=todo_data["user_id"],
+            completed=False,
+            created_at=todo_data["created_at"],
+            updated_at=todo_data["updated_at"],
+        )
 
-    todos_db.append(todo_data)
+        session.add(new_todo)
+        session.commit()
 
-    with open("database/todos.json", "w") as todosDB:
-        json.dump(todos_db, todosDB, indent=2)
+        new_todo = {
+            "id": new_todo.id,
+            "title": new_todo.title,
+            "completed": new_todo.completed,
+            "created_at": new_todo.created_at,
+            "updated_at": new_todo.updated_at,
+            "user_id": new_todo.user_id,
+        }
 
-    return {"data": todo_data}
+        return new_todo
+    except Exception as e:
+        raise e
 
 
 def updateTodo(todo_id, user_login, todo_title):
