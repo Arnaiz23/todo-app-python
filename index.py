@@ -1,11 +1,8 @@
-from src.controllers.userControllers import login
-from src.controllers.todosControllers import createNewTodo, deleteTodoController, getUserTodos, updateTodoCompleted, updateTodoController
+from fastapi import FastAPI
+
+app = FastAPI()
 
 
-def main():
-    # login()
-    deleteTodoController()
-
-
-if __name__ == "__main__":
-    main()
+@app.get("/")
+def home():
+    return {"hello": "world"}
