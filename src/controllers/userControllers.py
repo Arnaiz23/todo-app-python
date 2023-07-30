@@ -1,30 +1,29 @@
+from fastapi import HTTPException
+
 from ..libs import validate_email
+from ..models.models import LoginForm
 from ..services.userServices import getUserInfo, loginService, registerService
 
 
-def login():
-    email = input("Enter the email: ")
-    password = input("Enter the password: ")
-    # print(f"Email: {email}, Password: {password}")
+def loginController(login: LoginForm):
+    email = login.email
+    password = login.password
 
     if validate_email(email) is False:
-        print(f"The email {email} is not valid")
-        return
+        raise Exception(f"The email {email} is not valid", 422)
 
     if password.__len__() < 6:
-        print("Password must be at least 6 characters")
-        return
+        raise("Password must be at least 6 characters", 422)
 
     user_data = {"email": email, "password": password}
 
     try:
         result = loginService(user_data)
-        print(result)
+        return result
     except Exception as e:
-        # print(f"Error: {e}")
-        # statusCode = e.args[1]
+        statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({"error": errorMessage})
+        raise Exception(errorMessage, statusCode)
 
 
 def register():
