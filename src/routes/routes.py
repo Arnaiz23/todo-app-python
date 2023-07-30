@@ -1,8 +1,7 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
 
 from src.controllers.userControllers import loginController
-from src.models.models import CustomHttpException, LoginForm
+from src.models.models import LoginForm
 
 route = APIRouter()
 
@@ -10,14 +9,7 @@ route = APIRouter()
 # User routes
 @route.post("/login")
 def login_route(login: LoginForm):
-    try:
-        token = loginController(login)
-
-        return token
-    except Exception as e:
-        errorMessage = e.args[0]
-        statusCode = e.args[1]
-        return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
+    return loginController(login)
 
 
 # Todos routes
