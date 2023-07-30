@@ -29,7 +29,7 @@ def mapOneTodo(todo):
         "completed": todo.completed,
         "created_at": todo.created_at,
         "updated_at": todo.updated_at,
-        "user_id": todo.user_id
+        "user_id": todo.user_id,
     }
 
 
@@ -80,29 +80,27 @@ def updateTodo(todo_id, user_id, todo_title):
         raise Exception("This todo doesn't exists")
 
 
-def completedTodo(todo_id, user_login, todo_completed):
-    with open("database/todos.json", "r") as todosDB:
-        data_json = json.load(todosDB)
+def completedTodo(todo_id, user_id, todo_completed):
+    try:
+        user_todo = (
+            session.query(Todos_model)
+            .filter(and_(Todos_model.user_id == user_id, Todos_model.id == todo_id))
+            .first()
+        )
 
-    indices = [index for index, todo in enumerate(data_json) if todo["id"] == todo_id]
+        if user_todo is None:
+            raise Exception("This todo doesn't exists")
 
-    if not indices:
-        raise Exception("This todo doesn't exists", 400)
 
-    for index in indices:
-        if data_json[index]["user_id"] != user_login["id"]:
-            raise Exception("This user is not the owner of the todo")
+        user_todo.completed = todo_completed
 
-        if data_json[index]["completed"] == todo_completed:
-            raise Exception("This todo already have this value in the completed field")
+        session.commit()
 
-        data_json[index]["completed"] = todo_completed
-        todo_updated = data_json[index]
+        user_todo = mapOneTodo(user_todo)
 
-    with open("database/todos.json", "w") as todosDB:
-        json.dump(data_json, todosDB, indent=2)
-
-    return {"data": todo_updated}
+        return user_todo
+    except Exception as e:
+        raise e
 
 
 def deletedTodo(todo_id, user_login):

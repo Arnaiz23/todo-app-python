@@ -58,8 +58,8 @@ def updateTodoController():
 
     try:
         user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
-        todo_updated = updateTodo(todo_id, user_data['id'], todo_title)
-        print({ "data": todo_updated })
+        todo_updated = updateTodo(todo_id, user_data["id"], todo_title)
+        print({"data": todo_updated})
     except jwt.InvalidSignatureError:
         print(401)
     except Exception as e:
@@ -71,7 +71,7 @@ def updateTodoController():
 def updateTodoCompleted():
     todo_id = int(input("Enter the id of the todo: "))
     todo_completed = input("Enter the completed of the todo: ")
-    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
+    token = input("Token: ")
 
     try:
         todo_completed = todo_completed.capitalize()
@@ -83,9 +83,11 @@ def updateTodoCompleted():
         else:
             raise Exception("completed is missing", 400)
 
-        user_login = loginService(user_data)
-        todo_updated = completedTodo(todo_id, user_login["data"], todo_completed)
-        print(todo_updated)
+        user_login = jwt.decode(token, secret_key, algorithms=["HS256"])
+        todo_updated = completedTodo(todo_id, user_login["id"], todo_completed)
+        print({"data": todo_updated})
+    except jwt.InvalidSignatureError:
+        print(401)
     except Exception as e:
         # statusCode = e.args[1]
         errorMessage = e.args[0]
