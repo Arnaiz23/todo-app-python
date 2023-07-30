@@ -96,12 +96,14 @@ def updateTodoCompleted():
 
 def deleteTodoController():
     todo_id = int(input("Enter the id of the todo: "))
-    user_data = {"email": "adrian@gmail.com", "password": "adrian"}
+    token = input("Token: ")
 
     try:
-        user_login = loginService(user_data)
-        todo_deleted = deletedTodo(todo_id, user_login["data"])
+        user_login = jwt.decode(token, secret_key, algorithms=["HS256"])
+        todo_deleted = deletedTodo(todo_id, user_login["id"])
         print(todo_deleted)
+    except jwt.InvalidSignatureError:
+        print(401)
     except Exception as e:
         # statusCode = e.args[1]
         errorMessage = e.args[0]

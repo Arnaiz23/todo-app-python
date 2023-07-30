@@ -91,7 +91,6 @@ def completedTodo(todo_id, user_id, todo_completed):
         if user_todo is None:
             raise Exception("This todo doesn't exists")
 
-
         user_todo.completed = todo_completed
 
         session.commit()
@@ -103,21 +102,20 @@ def completedTodo(todo_id, user_id, todo_completed):
         raise e
 
 
-def deletedTodo(todo_id, user_login):
-    with open("database/todos.json", "r") as todosDB:
-        data_json = json.load(todosDB)
+def deletedTodo(todo_id, user_id):
+    try:
+        todo = (
+            session.query(Todos_model)
+            .filter(and_(Todos_model.id == todo_id, Todos_model.user_id == user_id))
+            .first()
+        )
 
-    indices = [index for index, todo in enumerate(data_json) if todo["id"] == todo_id]
+        if todo is None:
+            raise Exception("This todo doesn't exists")
 
-    if not indices:
-        raise Exception("This todo doesn't exists", 400)
+        session.delete(todo)
+        session.commit()
 
-    if data_json[indices[0]]["user_id"] != user_login["id"]:
-        raise Exception("This user is not the owner of the todo")
-
-    del data_json[indices[0]]
-
-    with open("database/todos.json", "w") as todosDB:
-        json.dump(data_json, todosDB, indent=2)
-
-    return 204
+        return 204
+    except Exception as e:
+        raise e
