@@ -27,3 +27,6 @@ def get_engine():
         return session, Base
     except OperationalError:
         print("Error with the database connection...❌")
+        session = None
+        Base = None
+        return session, Base
