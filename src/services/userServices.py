@@ -4,9 +4,11 @@ import bcrypt
 import jwt
 from sqlalchemy.exc import IntegrityError
 
-from db import Base, session
+from db import get_engine
 
 from ..libs import secret_key
+
+session, Base = get_engine()
 
 User_model = Base.classes.users
 
