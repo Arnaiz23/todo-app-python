@@ -1,6 +1,7 @@
-from fastapi import APIRouter
+from re import split
+from fastapi import APIRouter, Request
 
-from src.controllers.userControllers import loginController, register
+from src.controllers.userControllers import loginController, register, user_info
 from src.models.models import LoginForm, RegisterForm
 
 route = APIRouter()
@@ -14,6 +15,14 @@ def login_route(login: LoginForm):
 @route.post("/register")
 def login_route(registerBody: RegisterForm):
     return register(registerBody)
+
+@route.get("/users")
+def login_route(request: Request):
+    token_header = request.headers['authorization']
+    token_split = split(" ", token_header)
+    token = token_split[1]
+
+    return user_info(token)
 
 
 # Todos routes

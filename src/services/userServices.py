@@ -76,9 +76,9 @@ def registerService(user_data, remember):
         raise Exception("This email is already registered!!!", 409)
 
 
-def getUserInfo(code):
+def getUserInfo(token):
     try:
-        user_data = jwt.decode(code, secret_key, algorithms=["HS256"])
+        user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
 
         user_exists = (
             session.query(User_model)
