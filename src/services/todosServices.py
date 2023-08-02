@@ -31,7 +31,7 @@ def createTodo(todo_data):
 
         new_todo = mapOneTodo(new_todo)
 
-        return { "data": new_todo }
+        return {"data": new_todo}
     except Exception as e:
         raise e
 
@@ -53,7 +53,7 @@ def updateTodo(todo_id, user_id, todo_title):
 
         user_todo = mapOneTodo(user_todo)
 
-        return { "data": user_todo }
+        return {"data": user_todo}
     except Exception as e:
         # raise Exception("This todo doesn't exists", 404)
         raise e
@@ -76,7 +76,7 @@ def completedTodo(todo_id, user_id, todo_completed):
 
         user_todo = mapOneTodo(user_todo)
 
-        return { "data": user_todo }
+        return {"data": user_todo}
     except Exception as e:
         raise e
 

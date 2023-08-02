@@ -1,13 +1,16 @@
-from re import split, match
+from re import match, split
 
 from fastapi import Request
 
+
 def validate_email(email):
-    if match(r"[^@]+@[^@]+\.[^@]+", email):  
-        return True  
+    if match(r"[^@]+@[^@]+\.[^@]+", email):
+        return True
     return False
 
+
 secret_key = "secret_key"
+
 
 def mapTodos(todos):
     todos_map = []
@@ -34,7 +37,8 @@ def mapOneTodo(todo):
         "user_id": todo.user_id,
     }
 
+
 def getToken(request: Request):
-    token_header = request.headers['authorization']
+    token_header = request.headers["authorization"]
     token_split = split(" ", token_header)
     return token_split[1]

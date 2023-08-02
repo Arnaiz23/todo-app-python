@@ -1,5 +1,5 @@
-from fastapi.responses import JSONResponse
 from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 from ..libs import validate_email
 from ..models.models import LoginForm, RegisterForm
@@ -15,7 +15,7 @@ def loginController(login: LoginForm):
             raise Exception(f"The email {email} is not valid", 422)
 
         if password.__len__() < 6:
-            raise("Password must be at least 6 characters", 422)
+            raise ("Password must be at least 6 characters", 422)
 
         user_data = {"email": email, "password": password}
 
@@ -54,4 +54,4 @@ def user_info(token):
     except Exception as e:
         statusCode = e.args[1]
         # errorMessage = e.args[0]
-        raise HTTPException(status_code= statusCode)
+        raise HTTPException(status_code=statusCode)

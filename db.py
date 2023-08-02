@@ -1,7 +1,7 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import MetaData, create_engine
 from sqlalchemy.exc import OperationalError
-from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.orm import sessionmaker
 
 user_name = "root"
 password = "password"
