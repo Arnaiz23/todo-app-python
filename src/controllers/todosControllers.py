@@ -22,15 +22,17 @@ def getUserTodos(token):
         todos = getTodos(user_data["id"])
         return todos
     except jwt.InvalidSignatureError as e:
-        raise HTTPException(status_code=401)
+        return HTTPException(status_code=401)
+    # TODO: Use this error in all the routes with token
+    except jwt.ExpiredSignatureError:
+        return HTTPException(status_code=401)
     except Exception as e:
         statusCode = e.args[1]
         errorMessage = e.args[0]
-        raise JSONResponse(content={ "error": errorMessage }, status_code=statusCode)
+        return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
 
 
 def createNewTodo(token, body: CreateTodoModel):
-
     try:
         user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
         todo_data = {
@@ -44,28 +46,24 @@ def createNewTodo(token, body: CreateTodoModel):
         todo_response = createTodo(todo_data)
         return todo_response
     except jwt.InvalidSignatureError as e:
-        raise HTTPException(status_code=401)
+        return HTTPException(status_code=401)
     except Exception as e:
         statusCode = e.args[1]
         errorMessage = e.args[0]
-        raise JSONResponse(content={ "error": errorMessage }, status_code=statusCode)
+        return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
 
 
-def updateTodoController():
-    todo_id = int(input("Enter the id of the todo: "))
-    todo_title = input("Enter the new title: ")
-    token = input("Token: ")
-
+def updateTodoController(token, body: CreateTodoModel, todo_id):
     try:
         user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
-        todo_updated = updateTodo(todo_id, user_data["id"], todo_title)
-        print({"data": todo_updated})
+        todo_updated = updateTodo(todo_id, user_data["id"], body.title)
+        return todo_updated
     except jwt.InvalidSignatureError:
-        print(401)
+        return HTTPException(status_code=401)
     except Exception as e:
-        # statusCode = e.args[1]
+        statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({"error": errorMessage})
+        return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
 
 
 def updateTodoCompleted():

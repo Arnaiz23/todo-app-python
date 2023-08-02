@@ -12,5 +12,6 @@ class RegisterForm(BaseModel):
     name: str
     remember: Optional[int] = 1
 
+# TODO: Rename
 class CreateTodoModel(BaseModel):
     title: str

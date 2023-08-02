@@ -3,7 +3,7 @@ from src.libs import getToken
 
 from src.controllers.userControllers import loginController, register, user_info
 from src.models.models import CreateTodoModel, LoginForm, RegisterForm
-from src.controllers.todosControllers import createNewTodo, getUserTodos
+from src.controllers.todosControllers import createNewTodo, getUserTodos, updateTodoController
 
 route = APIRouter()
 
@@ -36,6 +36,12 @@ def create_todo_route(request: Request, body: CreateTodoModel):
     token = getToken(request)
 
     return createNewTodo(token, body)
+
+@route.put("/todos/{id}")
+def update_todo(request: Request, body: CreateTodoModel, id):
+    token = getToken(request)
+
+    return updateTodoController(token, body, id)
 
 @route.delete("/todos/{id}")
 def delete_todo(id: int):

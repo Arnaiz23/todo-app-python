@@ -44,15 +44,19 @@ def updateTodo(todo_id, user_id, todo_title):
             .first()
         )
 
+        if user_todo is None:
+            raise Exception("This todo doesn't exists", 404)
+
         user_todo.title = todo_title
 
         session.commit()
 
         user_todo = mapOneTodo(user_todo)
 
-        return user_todo
+        return { "data": user_todo }
     except Exception as e:
-        raise Exception("This todo doesn't exists")
+        # raise Exception("This todo doesn't exists", 404)
+        raise e
 
 
 def completedTodo(todo_id, user_id, todo_completed):
