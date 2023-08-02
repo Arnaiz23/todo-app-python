@@ -2,8 +2,8 @@ from fastapi import APIRouter, Request
 from src.libs import getToken
 
 from src.controllers.userControllers import loginController, register, user_info
-from src.models.models import CreateTodoModel, LoginForm, RegisterForm
-from src.controllers.todosControllers import createNewTodo, getUserTodos, updateTodoController
+from src.models.models import CompletedTodoModel, CreateTodoModel, LoginForm, RegisterForm
+from src.controllers.todosControllers import createNewTodo, getUserTodos, updateTodoCompleted, updateTodoController
 
 route = APIRouter()
 
@@ -42,6 +42,12 @@ def update_todo(request: Request, body: CreateTodoModel, id):
     token = getToken(request)
 
     return updateTodoController(token, body, id)
+
+@route.patch("/todos/{id}")
+def update_completed_todo(request: Request, body: CompletedTodoModel, id):
+    token = getToken(request)
+
+    return updateTodoCompleted(token, body, id)
 
 @route.delete("/todos/{id}")
 def delete_todo(id: int):

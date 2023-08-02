@@ -15,3 +15,6 @@ class RegisterForm(BaseModel):
 # TODO: Rename
 class CreateTodoModel(BaseModel):
     title: str
+
+class CompletedTodoModel(BaseModel):
+    completed: bool

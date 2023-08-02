@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 import jwt
 
-from ..models.models import CreateTodoModel
+from ..models.models import CompletedTodoModel, CreateTodoModel
 
 from ..libs import secret_key
 from ..services.todosServices import (
@@ -22,10 +22,10 @@ def getUserTodos(token):
         todos = getTodos(user_data["id"])
         return todos
     except jwt.InvalidSignatureError as e:
-        return HTTPException(status_code=401)
+        raise HTTPException(status_code=401)
     # TODO: Use this error in all the routes with token
     except jwt.ExpiredSignatureError:
-        return HTTPException(status_code=401)
+        raise HTTPException(status_code=401)
     except Exception as e:
         statusCode = e.args[1]
         errorMessage = e.args[0]
@@ -46,7 +46,7 @@ def createNewTodo(token, body: CreateTodoModel):
         todo_response = createTodo(todo_data)
         return todo_response
     except jwt.InvalidSignatureError as e:
-        return HTTPException(status_code=401)
+        raise HTTPException(status_code=401)
     except Exception as e:
         statusCode = e.args[1]
         errorMessage = e.args[0]
@@ -59,37 +59,27 @@ def updateTodoController(token, body: CreateTodoModel, todo_id):
         todo_updated = updateTodo(todo_id, user_data["id"], body.title)
         return todo_updated
     except jwt.InvalidSignatureError:
-        return HTTPException(status_code=401)
+        raise HTTPException(status_code=401)
     except Exception as e:
         statusCode = e.args[1]
         errorMessage = e.args[0]
         return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
 
 
-def updateTodoCompleted():
-    todo_id = int(input("Enter the id of the todo: "))
-    todo_completed = input("Enter the completed of the todo: ")
-    token = input("Token: ")
+def updateTodoCompleted(token, body: CompletedTodoModel, id):
+    todo_completed = body.completed
 
     try:
-        todo_completed = todo_completed.capitalize()
-
-        if todo_completed == "True":
-            todo_completed = True
-        elif todo_completed == "False":
-            todo_completed = False
-        else:
-            raise Exception("completed is missing", 400)
-
         user_login = jwt.decode(token, secret_key, algorithms=["HS256"])
-        todo_updated = completedTodo(todo_id, user_login["id"], todo_completed)
-        print({"data": todo_updated})
+        todo_updated = completedTodo(id, user_login["id"], todo_completed)
+
+        return todo_updated
     except jwt.InvalidSignatureError:
-        print(401)
+        raise HTTPException(status_code=401)
     except Exception as e:
-        # statusCode = e.args[1]
+        statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({"error": errorMessage})
+        return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
 
 
 def deleteTodoController():

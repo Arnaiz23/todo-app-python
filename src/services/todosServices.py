@@ -76,7 +76,7 @@ def completedTodo(todo_id, user_id, todo_completed):
 
         user_todo = mapOneTodo(user_todo)
 
-        return user_todo
+        return { "data": user_todo }
     except Exception as e:
         raise e
 
