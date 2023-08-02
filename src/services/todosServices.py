@@ -31,7 +31,7 @@ def createTodo(todo_data):
 
         new_todo = mapOneTodo(new_todo)
 
-        return new_todo
+        return { "data": new_todo }
     except Exception as e:
         raise e
 

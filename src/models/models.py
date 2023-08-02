@@ -11,3 +11,6 @@ class RegisterForm(BaseModel):
     password: str
     name: str
     remember: Optional[int] = 1
+
+class CreateTodoModel(BaseModel):
+    title: str

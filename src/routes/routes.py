@@ -2,8 +2,8 @@ from fastapi import APIRouter, Request
 from src.libs import getToken
 
 from src.controllers.userControllers import loginController, register, user_info
-from src.models.models import LoginForm, RegisterForm
-from src.controllers.todosControllers import getUserTodos
+from src.models.models import CreateTodoModel, LoginForm, RegisterForm
+from src.controllers.todosControllers import createNewTodo, getUserTodos
 
 route = APIRouter()
 
@@ -26,11 +26,17 @@ def login_route(request: Request):
 
 # Todos routes
 @route.get("/todos")
-def getUserTodosRoute(request: Request):
+def get_user_todos_route(request: Request):
     token = getToken(request)
 
     return getUserTodos(token)
 
+@route.post("/todos")
+def create_todo_route(request: Request, body: CreateTodoModel):
+    token = getToken(request)
+
+    return createNewTodo(token, body)
+
 @route.delete("/todos/{id}")
-def deleteTodo(id: int):
+def delete_todo(id: int):
     return {"route": f"Delete todo {id}"}

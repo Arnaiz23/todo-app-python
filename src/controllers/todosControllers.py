@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse
 
 import jwt
 
+from ..models.models import CreateTodoModel
+
 from ..libs import secret_key
 from ..services.todosServices import (
     completedTodo,
@@ -24,17 +26,15 @@ def getUserTodos(token):
     except Exception as e:
         statusCode = e.args[1]
         errorMessage = e.args[0]
-        raise JSONResponse(content=errorMessage, status_code=statusCode)
+        raise JSONResponse(content={ "error": errorMessage }, status_code=statusCode)
 
 
-def createNewTodo():
-    todo_title = input("Enter the title of the todo: ")
-    token = input("Token: ")
+def createNewTodo(token, body: CreateTodoModel):
 
     try:
         user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
         todo_data = {
-            "title": todo_title,
+            "title": body.title,
             "user_id": user_data["id"],
             "completed": False,
             "created_at": datetime.now().isoformat(),
@@ -42,13 +42,13 @@ def createNewTodo():
         }
 
         todo_response = createTodo(todo_data)
-        print({"data": todo_response})
+        return todo_response
     except jwt.InvalidSignatureError as e:
-        print(401)
+        raise HTTPException(status_code=401)
     except Exception as e:
-        # statusCode = e.args[1]
+        statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({"error": errorMessage})
+        raise JSONResponse(content={ "error": errorMessage }, status_code=statusCode)
 
 
 def updateTodoController():
