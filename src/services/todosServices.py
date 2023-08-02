@@ -1,9 +1,10 @@
 from sqlalchemy import and_
 
-from db import Base, session
+from db import get_engine
 
 from ..libs import mapOneTodo, mapTodos
 
+session, Base = get_engine()
 Todos_model = Base.classes.todos
 
 
@@ -12,7 +13,7 @@ def getTodos(user_id):
 
     user_todos = mapTodos(user_todos)
 
-    return user_todos
+    return {"data": user_todos}
 
 
 def createTodo(todo_data):

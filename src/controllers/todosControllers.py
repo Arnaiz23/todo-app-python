@@ -1,4 +1,6 @@
 from datetime import datetime
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 import jwt
 
@@ -12,19 +14,17 @@ from ..services.todosServices import (
 )
 
 
-def getUserTodos():
-    token = input("Token: ")
-
+def getUserTodos(token):
     try:
         user_data = jwt.decode(token, secret_key, algorithms=["HS256"])
         todos = getTodos(user_data["id"])
-        print({"data": todos})
+        return todos
     except jwt.InvalidSignatureError as e:
-        print(401)
+        raise HTTPException(status_code=401)
     except Exception as e:
-        # statusCode = e.args[1]
+        statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({"error": errorMessage})
+        raise JSONResponse(content=errorMessage, status_code=statusCode)
 
 
 def createNewTodo():

@@ -1,6 +1,5 @@
 from fastapi.responses import JSONResponse
 from fastapi import HTTPException
-from http import HTTPStatus
 
 from ..libs import validate_email
 from ..models.models import LoginForm, RegisterForm
