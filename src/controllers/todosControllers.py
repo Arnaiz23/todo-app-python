@@ -82,17 +82,15 @@ def updateTodoCompleted(token, body: CompletedTodoModel, id):
         return JSONResponse(content={"error": errorMessage}, status_code=statusCode)
 
 
-def deleteTodoController():
-    todo_id = int(input("Enter the id of the todo: "))
-    token = input("Token: ")
-
+def deleteTodoController(token, id):
     try:
         user_login = jwt.decode(token, secret_key, algorithms=["HS256"])
-        todo_deleted = deletedTodo(todo_id, user_login["id"])
-        print(todo_deleted)
+        todo_deleted = deletedTodo(id, user_login["id"])
+        return todo_deleted
+        # return JSONResponse(status_code=todo_deleted)
     except jwt.InvalidSignatureError:
-        print(401)
+        raise HTTPException(status_code=401)
     except Exception as e:
-        # statusCode = e.args[1]
+        statusCode = e.args[1]
         errorMessage = e.args[0]
-        print({"error": errorMessage})
+        return JSONResponse(content={"error": errorMessage}, status_code=statusCode)

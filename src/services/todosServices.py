@@ -90,7 +90,7 @@ def deletedTodo(todo_id, user_id):
         )
 
         if todo is None:
-            raise Exception("This todo doesn't exists")
+            raise Exception("This todo doesn't exists", 404)
 
         session.delete(todo)
         session.commit()
